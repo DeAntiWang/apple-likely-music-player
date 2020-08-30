@@ -20,7 +20,12 @@ export default function Index() {
   return (
     <div>
       <distThresholdContext.Provider value={Number(distThreshold)}>
-        <Player imgSrc={imgId} />
+        <Player
+          title="Sharuru"
+          album="Ablum Name"
+          imgSrc={imgId}
+          musicSrc={"http://localhost:8000/source/music/sharuru.mp3"}
+        />
       </distThresholdContext.Provider>
       <input value={distThreshold} onChange={onInputChange} />
     </div>

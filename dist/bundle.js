@@ -28631,7 +28631,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 function Player(props) {
-  // context
+  // ref
+  var audioRef = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(null); // context
+
   var distThreshold = Object(react__WEBPACK_IMPORTED_MODULE_0__["useContext"])(_utils_context__WEBPACK_IMPORTED_MODULE_2__["distThresholdContext"]); // state
 
   var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])("rgb(255,255,255)"),
@@ -28654,15 +28656,23 @@ function Player(props) {
       paused = _useState8[0],
       setPaused = _useState8[1];
 
+  var boxColor = function boxColor(color, opcation) {
+    return color.replace("rgb", "rgba").replace(")", ",".concat(opcation || "0.9", ")"));
+  };
+
   var onBtnClick = function onBtnClick() {
     if (paused) {
+      audioRef.current.play();
       setPaused(false);
     } else {
+      audioRef.current.pause();
       setPaused(true);
     }
   };
 
-  var onTimeUpdate = function onTimeUpdate(e) {};
+  var onTimeUpdate = function onTimeUpdate() {
+    setProgress(audioRef.current.currentTime / audioRef.current.duration);
+  };
 
   Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
     // do something like getColorSet, setBackColor, setForeColor
@@ -28674,7 +28684,7 @@ function Player(props) {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     id: "player-box",
     style: {
-      backgroundColor: backColor,
+      backgroundColor: boxColor(backColor, 0.9),
       color: foreColor
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -28689,30 +28699,35 @@ function Player(props) {
     id: "player-box__info-group"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
     id: "player-box__info-group__title"
-  }, "Title"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", {
+  }, props.title || "Title"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", {
     id: "player-box__info-group__album"
-  }, "Album Name")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }, props.album || "Album Name")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     id: "player-box__controller"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     id: "player-box__progress-bar"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     id: "player-box__progress-bar__progress",
     style: {
-      backgroundColor: backColor,
-      width: "".concat(progress, "*100%")
+      backgroundColor: foreColor,
+      width: "".concat(progress * 100, "%")
     }
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     id: "player-box__progress-bar__progress-ball",
     style: {
-      backgroundColor: foreColor,
-      display: "none"
+      backgroundColor: foreColor
     }
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
     id: "player-box__play-btn",
-    onClick: onBtnClick
-  }, "play!"))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("audio", {
+    onClick: onBtnClick,
+    style: {
+      backgroundColor: foreColor,
+      color: backColor
+    }
+  }, "play"))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("audio", {
     id: "player-audio",
+    ref: audioRef,
     src: props.musicSrc,
+    preload: "meta",
     onTimeUpdate: onTimeUpdate
   }));
 }
@@ -28794,7 +28809,10 @@ function Index() {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_context__WEBPACK_IMPORTED_MODULE_2__["distThresholdContext"].Provider, {
     value: Number(distThreshold)
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_component_player__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    imgSrc: imgId
+    title: "Sharuru",
+    album: "Ablum Name",
+    imgSrc: imgId,
+    musicSrc: "http://localhost:8000/source/music/sharuru.mp3"
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
     value: distThreshold,
     onChange: onInputChange

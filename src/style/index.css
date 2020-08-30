@@ -1,5 +1,6 @@
 * {
   box-sizing: border-box;
+  outline: none;
 }
 
 html,
@@ -22,7 +23,7 @@ body {
   height: 180px;
   padding: 20px;
   margin: 30px 30px 30px 0;
-  border-radius: 1em;
+  border-radius: 8px;
 }
 
 #player-box__content {
@@ -37,6 +38,7 @@ body {
 #player-box__img > img {
   width: calc(180px - 20px * 2);
   height: calc(180px - 20px * 2);
+  border-radius: 8px;
 }
 
 #player-box__right-box {
@@ -91,5 +93,21 @@ body {
 
 #player-box__play-btn {
   position: absolute;
-  display: none;
+  border: none;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border-radius: 100%;
+  margin-left: calc(210px - 28px);
+  cursor: pointer;
+}
+
+#player-box__play-btn:active::after {
+  position: absolute;
+  content: "";
+  width: 28px;
+  height: 28px;
+  border-radius: 100%;
+  background-color: rgba(255, 255, 255, 0.1);
+  margin: -7px 0 0 -26px;
 }
